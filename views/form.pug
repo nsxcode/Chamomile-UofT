@@ -1,0 +1,57 @@
+doctype html
+html(lang="en")
+  head
+    title Static Files
+    meta(charset='utf-8')
+    link(rel="stylesheet", href="/static/main.css")
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap" rel="stylesheet")
+    link(rel='stylesheet', href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&family=Genos:ital@1&display=swap", type='text/css')
+    style.
+      body{
+       background-color: #f3fdfe ;
+       
+      }
+      h1{
+        font-family: 'Dancing Script', cursive;
+        display: flex;
+        justify-self: center;
+      }
+      .navContainer{
+        height: 80px;
+        display: flex;
+        font-size: 1rem;
+        position: sticky;
+        border-style: solid;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-width: 1px;
+        border-color: black;
+        padding: 5px 10px 5px 10px;
+        justify-content: center;
+      }
+      .navbarLogo{
+          justify-self: center;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          font-family: 'Genos', sans-serif;
+          font-size: 34px;
+      .choosefilebtn{
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+      }
+      }
+  body
+    div.navcontainer
+      div.navbarLogo
+        h1 Chamomile
+    
+    form(method="POST", action="/upload", enctype="multipart/form-data")
+      //- This is what is displaying on the screen :) 
+      input.choosefilebtn(type="file", name="file")
+      input(type="submit")
