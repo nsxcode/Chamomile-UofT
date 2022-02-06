@@ -22,8 +22,6 @@ const { DocumentProcessorServiceClient } =
 var fs = require("fs");
 var readline = require("readline");
 const { text } = require("express");
-const res = require("express/lib/response");
-const { match } = require("assert");
 
 const docClient = new DocumentProcessorServiceClient();
 
@@ -58,21 +56,6 @@ app.get("/", (req, res) => {
   res.render("form.pug");
 });
 
-// const upload = Multer({
-//   dest:"/temp"
-// });
-
-// app.post(
-//   "/upload",
-//   upload.single("file" /* name attribute of <file> element in your form */),
-//   (req, res) => {
-//     try {
-//       res.send(req.file);
-//     }catch(err) {
-//       res.send(400);
-//     }
-//   }
-// );
 
 var byteContent;
 
@@ -105,11 +88,9 @@ app.post("/upload", multer.single("file"), (req, res, next) => {
     } else {
       mime = "image/jpeg";
     }
-    processImage(encodedImage, mime, function(matches) {
-      res.status(200).send(sort_object(matches));
-    });
+    processImage(encodedImage, mime);
 
-    
+    // res.status(200).send(publicUrl);
     
    
   });
@@ -117,23 +98,7 @@ app.post("/upload", multer.single("file"), (req, res, next) => {
   blobStream.end(req.file.buffer);
 });
 
-function sort_object(obj) {
-  items = Object.keys(obj).map(function(key) {
-      return [key, obj[key]];
-  });
-  items.sort(function(first, second) {
-      return second[1] - first[1];
-  });
-  sorted_obj={}
-  items.forEach(v => {
-    use_key = v[0]
-    use_value = v[1]
-    sorted_obj[use_key] = use_value
-  });
-  return(sorted_obj)
-} 
-
-const processImage = async (encodedImage, mime, _callback) => {
+const processImage = async (encodedImage, mime) => {
   const name = `projects/${projectId}/locations/${location}/processors/${processorId}`;
 
   const request = {
@@ -151,14 +116,10 @@ const processImage = async (encodedImage, mime, _callback) => {
   // Get all of the document text as one big string
   const { text } = document;
 
-  extractGeneNames(text, function(matches){
-    _callback(matches);
-  });
-
-
+  extractGeneNames(text);
 };
 
-const extractGeneNames = (body, _callback) => {
+const extractGeneNames = (body) => {
 
   textSet = new Set(body.split(/\W+/));
   matchSet = {};
@@ -171,7 +132,7 @@ const extractGeneNames = (body, _callback) => {
   });
 
   rd.on("line", function (line) {
-    if (textSet.has(line) && line.length >= 3){
+    if (textSet.has(line)){
       var re = new RegExp("\\b" + line + "\\b", 'g');
       var count = (body.match(re) || []).length;
       matchSet[line] = count;
@@ -179,18 +140,17 @@ const extractGeneNames = (body, _callback) => {
   });
 
   
-//   app.post('/user' , (req,res)=>{
-//     // 200 status code means OK
-//     res.status(200).send(matchSet); 
-//  })
-
 
   rd.on('close', function() {
     console.log("done searching");
-    _callback(matchSet);
-  });  
+    console.log(matchSet);
+    app.post('/user' , (req,res)=>{
 
-  return(matchSet);
+      for(let gene of m ) 
+
+      res.status(200).send(matchSet); 
+    })
+  });  
 
 };
 
