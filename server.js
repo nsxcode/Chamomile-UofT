@@ -105,7 +105,9 @@ app.post("/upload", multer.single("file"), (req, res, next) => {
     }
     processImage(encodedImage, mime);
 
-    res.status(200).send(publicUrl);
+    // res.status(200).send(publicUrl);
+    
+   
   });
 
   blobStream.end(req.file.buffer);
@@ -152,10 +154,28 @@ const extractGeneNames = (body) => {
     }
   });
 
+  
+//   app.post('/user' , (req,res)=>{
+//     // 200 status code means OK
+//     res.status(200).send(matchSet); 
+//  })
+
+
   rd.on('close', function() {
     console.log("done searching");
     console.log(matchSet);
+
+    str = JSON.stringify(matchSet);
+    str = JSON.stringify(matchSet, null, 4); // (Optional) beautiful indented output.
+    console.log(str); 
+
+    app.get("/upload" , (req,res)=>{
+
+      res.status(200).send(str); 
+      
+    })
   });  
+
 };
 
 module.exports = app;
