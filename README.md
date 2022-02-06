@@ -1,4 +1,4 @@
-# Chamomile-UofT
+# Chamomile
 For UofT IX Hackathon
 
 ## Inspiration
